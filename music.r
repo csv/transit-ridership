@@ -36,8 +36,15 @@ beat <- (function(){
 })()
 writeWave(beat, 'beat.wav')
 
-chicago <- arpeggidata(ridership$chicago, blip, bpm = bpm, count = count)
-writeWave(chicago, 'chicago.wav')
+# chicago <- arpeggidata(ridership$chicago, blip, bpm = bpm, count = count)
+# writeWave(chicago, 'chicago.wav')
 
-newyork <- arpeggidata(ridership$newyork, sinewave, bpm = bpm, count = count)
-writeWave(newyork, 'newyork.wav')
+# newyork <- arpeggidata(ridership$newyork, sinewave, bpm = bpm, count = count)
+# writeWave(newyork, 'newyork.wav')
+
+# This probably won't sound that good.
+pca <- as.data.frame(princomp(ridership[c('chicago','newyork')], cor = T)$scores)
+comp.1 <- arpeggidata(pca$Comp.1, sinewave, bpm = bpm, count = count, scale="Emajor")
+writeWave(comp.1, 'comp1.wav')
+comp.2 <- arpeggidata(pca$Comp.2, sinewave, bpm = bpm, count = count, scale="Cmajor")
+writeWave(comp.2, 'comp2.wav')
