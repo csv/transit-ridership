@@ -26,7 +26,7 @@ beat <- (function(){
   wavs <- list(roland$HHO, roland$SD1, roland$BD1)
 
   #          Weekend,     week
-  hihat <- c(0,0,    1,0,1,0,1)
+  hihat <- c(0,0,    0,0,0,0,1)
   kick  <- c(1,1,    0,1,0,1,0)
   snare <- c(0,0,    0,1,0,1,0)
   seqs <- list(hihat, snare, kick)
@@ -34,9 +34,7 @@ beat <- (function(){
   measure <- sequence(wavs, seqs, bpm = bpm, count = count)
   loop(measure, nrow(ridership)/7)
 })()
-
-
-aoeu
+writeWave(beat, 'beat.wav')
 
 chicago <- arpeggidata(ridership$chicago, piano)
 writeWave(chicago, 'chicago.wav', bpm = bpm, count = count)
