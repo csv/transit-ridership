@@ -1,4 +1,5 @@
 source('data.r')
+library(grDevices)
 
 ridership$newyork.prop <- ridership$newyork / max(ridership$newyork)
 ridership$chicago.prop <- ridership$chicago / max(ridership$chicago)
@@ -20,6 +21,8 @@ plot.base <- function() {
 
 plot.date <- function(date) {
   df <- ridership[ridership$date <= date,]
+  par(bg = 'grey')
   plot.base()
-  lines(newyork.prop ~ date, data = df)
+  lines(newyork.prop ~ date, data = df, col = rgb(1,0,0,0.5, max = 1))
+  lines(chicago.prop ~ date, data = df, col = rgb(0,1,1,0.5, max = 1) )
 }
