@@ -14,13 +14,13 @@ if (!('ridership' %in% ls())) {
     
     ridership <- join(chicago, newyork)
     ridership <- na.omit(ridership[order(ridership$date),])
-    ridership
+    ridership[1:280,]
   })()
 }
 
 ddr_init(player = '#!/usr/bin/env mplayer')
 bpm <- 140
-count <- 'seven'
+count <- 'seven_'
 
 beat <- (function(){
   wavs <- list(roland$HHO, roland$SD1, roland$BD1)
@@ -36,8 +36,8 @@ beat <- (function(){
 })()
 writeWave(beat, 'beat.wav')
 
-chicago <- arpeggidata(ridership$chicago, blip)
-writeWave(chicago, 'chicago.wav', bpm = bpm, count = count)
+chicago <- arpeggidata(ridership$chicago, blip, bpm = bpm, count = count)
+writeWave(chicago, 'chicago.wav')
 
-newyork <- arpeggidata(ridership$newyork, sinewave)
-writeWave(newyork, 'newyork.wav', bpm = bpm, count = count)
+newyork <- arpeggidata(ridership$newyork, sinewave, bpm = bpm, count = count)
+writeWave(newyork, 'newyork.wav')
