@@ -20,15 +20,15 @@ if (!('ridership' %in% ls())) {
 
 ddr_init(player = '#!/usr/bin/env mplayer')
 bpm <- 140
-count <- 1/7
+count <- 'seven'
 
 beat <- (function(){
   wavs <- list(roland$HHO, roland$SD1, roland$BD1)
 
-  #          Weekend,     week
-  hihat <- c(0,0,    0,0,0,0,1)
-  kick  <- c(1,1,    0,1,0,1,0)
-  snare <- c(0,0,    0,1,0,1,0)
+  # Starts on Saturday; stress on index 3, 5 and 7, with 3 as the downbeat
+  hihat <- c(1,1,    0,1,0,1,0)
+  kick  <- c(0,0,    1,0,1,0,1)
+  snare <- c(0,0,    0,0,0,0,1)
   seqs <- list(hihat, snare, kick)
   
   measure <- sequence(wavs, seqs, bpm = bpm, count = count)
@@ -36,8 +36,8 @@ beat <- (function(){
 })()
 writeWave(beat, 'beat.wav')
 
-chicago <- arpeggidata(ridership$chicago, piano)
+chicago <- arpeggidata(ridership$chicago, blip)
 writeWave(chicago, 'chicago.wav', bpm = bpm, count = count)
 
-newyork <- arpeggidata(ridership$newyork, piano)
+newyork <- arpeggidata(ridership$newyork, sinewave)
 writeWave(newyork, 'newyork.wav', bpm = bpm, count = count)
