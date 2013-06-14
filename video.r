@@ -12,9 +12,12 @@ COL <- list(
   off.black = rgb(0.1, 0.1, 0.1, max = 1)
 )
 
+START.DATE <- as.Date('2010-04-01')
+END.DATE   <- max(ridership$date)
+
 #' Plot the stuff that remains constant across days.
 plot.base <- function() {
-  x.axis <- seq.Date(as.Date('2010-04-01'), max(ridership$date), by = 'month')
+  x.axis <- seq.Date(START.DATE, END.DATE, by = 'month')
   plot(rep(0:1, nrow(ridership)/2) ~ ridership$date, type = 'n', axes = F,
        xlab = '', main = '', ylab = '')
   axis(1, at = x.axis, labels = strftime(x.axis, format = '%b %Y'),
@@ -59,4 +62,12 @@ plot.date <- function(date) {
 
   # Print the date.
   mtext(strftime(date, format = '%A, %B %m, %Y'), side = 3)
+
+  # Gauges on the sides
+  last.week <- ridership.sofar[(ridership.sofar$date + 7) > date,]
+  last.week$alpha <- ((1:7) ^ 2) / 7
+  last.week$col <- rgb(7, 7, 7, last.week$alpha, max = 7)
+  a_ply(last.week, 1, function(df) {
+    lines(START.DATE + c(-5, 5), rep(df[1,'chicago.prop'], 2), col = df[1,'col'])
+  })
 }
