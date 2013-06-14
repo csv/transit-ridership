@@ -68,6 +68,7 @@ plot.date <- function(date) {
   last.week$alpha <- ((1:7) ^ 2) / 7
   last.week$col <- rgb(7, 7, 7, last.week$alpha, max = 7)
   a_ply(last.week, 1, function(df) {
-    lines(START.DATE + c(-5, 5), rep(df[1,'chicago.prop'], 2), col = df[1,'col'])
+    lines(START.DATE + c(5, 10), rep(df[1,'chicago.prop'], 2), col = df[1,'col'])
+    lines(END.DATE   - c(5, 10), rep(df[1,'newyork.prop'], 2), col = df[1,'col'])
   })
 }
