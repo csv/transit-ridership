@@ -1,4 +1,5 @@
 #!/bin/sh
+set -e
 bpm=140
 
 sox -M chicago.wav newyork.wav beat.wav /tmp/transit.wav
