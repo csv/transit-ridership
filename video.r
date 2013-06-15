@@ -97,11 +97,18 @@ plot.date <- function(date) {
 
   # Gauges on the sides
   last.week <- ridership.sofar[(ridership.sofar$date + 7) > date,]
-  last.week$alpha <- ((7:1) ^ 2) / 7
+  last.week$alpha <- ((nrow(last.week):1) ^ 2) / nrow(last.week)
 
-  last.week$col <- rgb(7, 7, 7, last.week$alpha, max = 7)
+  last.week$col <- rgb(nrow(last.week), nrow(last.week), nrow(last.week), last.week$alpha, max = nrow(last.week))
   a_ply(last.week, 1, function(df) {
     lines(START.DATE + c(5, 10), rep(df[1,'chicago.prop'], 2), col = df[1,'col'])
     lines(END.DATE   - c(5, 10), rep(df[1,'newyork.prop'], 2), col = df[1,'col'])
   })
 }
+
+a_ply(ridership[1:30,], 1, function(df) {
+  date <- df[1,'date']
+  png(paste('frames',format(date),sep='/'), width = 1200, height = 900, res = 200)
+  plot.date(date)
+  dev.off()
+})
