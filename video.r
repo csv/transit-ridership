@@ -57,7 +57,6 @@ plot.date <- function(date) {
   ridership.sofar <- ridership[ridership$date <= date,]
 
   day <- strftime(date, format = '%A')
-  print(day)
   if(day == 'Friday' | day == 'Sunday'){
     par(
       bg = COL$green
@@ -108,7 +107,7 @@ plot.date <- function(date) {
 
 a_ply(ridership[1:100,], 1, function(df) {
   date <- df[1,'date']
-  png(paste('frames',format(date),sep='/'), width = 1600, height = 900, res = 200)
+  png(paste('frames',format(date),sep='/'), width = 3000, height = 1000, res = 200)
   plot.date(date)
   dev.off()
 })
