@@ -6,11 +6,11 @@ ridership$chicago.prop <- ridership$chicago / max(ridership$chicago)
 
 #' Color palette
 COL <- list(
-  chicago = rgb(0.5, 0.0, 0.0, max = 1),
-  newyork = rgb(0.0, 0.0, 0.5, max = 1),
+  chicago = rgb(1.0, 1.0, 0.0, max = 1),
+  newyork = rgb(0.0, 1.0, 1.0, max = 1),
   off.white = rgb(0.9, 0.9, 0.9, max = 1),
   off.black = rgb(0.1, 0.1, 0.1, max = 1),
-  green = rgb(0.5, 1, 0.5, max = 1)
+  green = rgb(0.5, 0.0, 0.5, max = 1)
 )
 
 START.DATE <- as.Date('2010-04-01')
@@ -18,11 +18,14 @@ END.DATE   <- max(ridership$date)
 
 #' Plot the stuff that remains constant across days.
 plot.base <- function() {
+  par(las = 0)
   x.axis <- seq.Date(START.DATE, END.DATE, by = 'month')
   plot(rep(0:1, nrow(ridership)/2) ~ ridership$date, type = 'n', axes = F,
        xlab = '', main = '', ylab = '')
-  axis(1, at = x.axis, labels = strftime(x.axis, format = '%b %Y'))
+  axis(1, at = x.axis, labels = strftime(x.axis, format = '%b %Y'),
+    col = COL$off.white, col.ticks = COL$off.white)
 
+  par(las = 2)
   chicago.axis <-  seq(0, 1e6, 1e5)
   axis(2, at = chicago.axis / max(chicago.axis), labels = as.character(chicago.axis),
     col = COL$chicago, col.ticks = COL$chicago)
@@ -32,6 +35,8 @@ plot.base <- function() {
   axis(4, at = newyork.axis / max(newyork.axis), labels = newyork.axis,
     col = COL$newyork, col.ticks = COL$newyork)
   mtext('New York', side = 4, col = COL$newyork)
+
+  par(las = 0)
 }
 
 is.weekend <- function(date){
@@ -47,23 +52,21 @@ plot.date <- function(date) {
   print(day)
   if(day == 'Friday' | day == 'Sunday'){
     par(
-      bg = COL$green,
-      col = COL$off.black,
-      col.axis = COL$off.black,
-      col.main = COL$off.black,
-      col.lab  = COL$off.black,
-      col.sub  = COL$off.black
+      bg = COL$green
     )
   } else {
     par(
-      bg = COL$off.black,
-      col = COL$off.white,
-      col.axis = COL$off.white,
-      col.main = COL$off.white,
-      col.lab  = COL$off.white,
-      col.sub  = COL$off.white
+      bg = COL$off.black
     )
   }
+  par(
+    col = COL$off.white,
+    col.axis = COL$off.white,
+    col.main = COL$off.white,
+    col.lab  = COL$off.white,
+    col.sub  = COL$off.white,
+    font = 2
+  )
   plot.base()
 
   # One line per day
