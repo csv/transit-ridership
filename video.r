@@ -7,9 +7,10 @@ ridership$chicago.prop <- ridership$chicago / max(ridership$chicago)
 #' Color palette
 COL <- list(
   chicago = rgb(0.5, 0.0, 0.0, max = 1),
-  newyork = rgb(0.0, 0.5, 0.5, max = 1),
+  newyork = rgb(0.0, 0.0, 0.5, max = 1),
   off.white = rgb(0.9, 0.9, 0.9, max = 1),
-  off.black = rgb(0.1, 0.1, 0.1, max = 1)
+  off.black = rgb(0.1, 0.1, 0.1, max = 1),
+  green = rgb(0.5, 1, 0.5, max = 1)
 )
 
 START.DATE <- as.Date('2010-04-01')
@@ -20,8 +21,7 @@ plot.base <- function() {
   x.axis <- seq.Date(START.DATE, END.DATE, by = 'month')
   plot(rep(0:1, nrow(ridership)/2) ~ ridership$date, type = 'n', axes = F,
        xlab = '', main = '', ylab = '')
-  axis(1, at = x.axis, labels = strftime(x.axis, format = '%b %Y'),
-    col = COL$off.white, col.ticks = COL$off.white)
+  axis(1, at = x.axis, labels = strftime(x.axis, format = '%b %Y'))
 
   chicago.axis <-  seq(0, 1e6, 1e5)
   axis(2, at = chicago.axis / max(chicago.axis), labels = as.character(chicago.axis),
@@ -34,16 +34,36 @@ plot.base <- function() {
   mtext('New York', side = 4, col = COL$newyork)
 }
 
+is.weekend <- function(date){
+  day <- strftime(date, format = '%A')
+  day == 'Friday' | day == 'Saturday' | day == 'Sunday'
+}
+
 #' Plot a frame of video.
 plot.date <- function(date) {
   ridership.sofar <- ridership[ridership$date <= date,]
-  par(bg = COL$off.black,
+
+  day <- strftime(date, format = '%A')
+  print(day)
+  if(day == 'Friday' | day == 'Sunday'){
+    par(
+      bg = COL$green,
+      col = COL$off.black,
+      col.axis = COL$off.black,
+      col.main = COL$off.black,
+      col.lab  = COL$off.black,
+      col.sub  = COL$off.black
+    )
+  } else {
+    par(
+      bg = COL$off.black,
       col = COL$off.white,
       col.axis = COL$off.white,
       col.main = COL$off.white,
       col.lab  = COL$off.white,
       col.sub  = COL$off.white
-      )
+    )
+  }
   plot.base()
 
   # One line per day
@@ -65,7 +85,8 @@ plot.date <- function(date) {
 
   # Gauges on the sides
   last.week <- ridership.sofar[(ridership.sofar$date + 7) > date,]
-  last.week$alpha <- ((1:7) ^ 2) / 7
+  last.week$alpha <- ((7:1) ^ 2) / 7
+
   last.week$col <- rgb(7, 7, 7, last.week$alpha, max = 7)
   a_ply(last.week, 1, function(df) {
     lines(START.DATE + c(5, 10), rep(df[1,'chicago.prop'], 2), col = df[1,'col'])
