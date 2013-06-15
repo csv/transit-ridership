@@ -13,8 +13,12 @@ COL <- list(
   green = rgb(0.5, 0.0, 0.5, max = 1)
 )
 
-START.DATE <- as.Date('2010-04-01')
-END.DATE   <- max(ridership$date)
+START.DATE <- as.Date(strftime(min(ridership$date), format = '%Y-%m-01'))
+END.DATE   <- as.Date(paste(
+  strftime(max(ridership$date), format = '%Y'),
+  1 + as.numeric(strftime(max(ridership$date), format = '%m')),
+  '01',
+  sep = '-'))
 
 #' Plot the stuff that remains constant across days.
 plot.base <- function() {
@@ -26,17 +30,21 @@ plot.base <- function() {
     col = COL$off.white, col.ticks = COL$off.white)
 
   par(las = 2)
-  chicago.axis <-  seq(0, 1e6, 1e5)
-  axis(2, at = chicago.axis / max(chicago.axis), labels = as.character(chicago.axis),
-    col = COL$chicago, col.ticks = COL$chicago)
-  mtext('Chicago', side = 2, col = COL$chicago)
+  chicago.axis <-  seq(0, 1e6, 2e5)
+  text(START.DATE, chicago.axis / max(chicago.axis), labels = c('0', paste(c(2, 4, 6, 8), '00k', sep = ''), '1 million'), pos = 2, col = COL$chicago, font = 1)
+  text(START.DATE, 1.05, 'Chicago', col = COL$chicago, pos = 2)
 
-  newyork.axis <- seq(0, 6e6, 5e5)
-  axis(4, at = newyork.axis / max(newyork.axis), labels = newyork.axis,
-    col = COL$newyork, col.ticks = COL$newyork)
-  mtext('New York', side = 4, col = COL$newyork)
+  newyork.axis <- seq(0, 6e6, 1e6)
+  text(END.DATE, newyork.axis / max(newyork.axis), labels = c('0', paste(1:6, 'million')), pos = 4, col = COL$newyork, font = 1)
+  text(END.DATE, 1.05, 'New York', col = COL$newyork, pos = 4)
 
-  par(las = 0)
+
+  par(
+    las = 0,
+    mar = c(2,8,2,8),
+    lwd = 5,
+    lend = 2
+  )
 }
 
 is.weekend <- function(date){
@@ -65,7 +73,8 @@ plot.date <- function(date) {
     col.main = COL$off.white,
     col.lab  = COL$off.white,
     col.sub  = COL$off.white,
-    font = 2
+    font = 2,
+    xpd = T
   )
   plot.base()
 
