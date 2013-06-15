@@ -13,7 +13,6 @@ if (!('ridership' %in% ls())) {
     
     ridership <- join(chicago, newyork)
     ridership <- na.omit(ridership[order(ridership$date),])
-    ridership[1:280,]
+    ridership
   })()
 }
-

@@ -22,7 +22,13 @@ END.DATE   <- as.Date(paste(
 
 #' Plot the stuff that remains constant across days.
 plot.base <- function() {
-  par(las = 0)
+  par(
+    las = 0,
+    mar = c(2, 6, 2, 6),
+    oma = rep(0, 4),
+    lwd = 5,
+    lend = 2
+  )
   x.axis <- seq.Date(START.DATE, END.DATE, by = 'month')
   plot(rep(0:1, nrow(ridership)/2) ~ ridership$date, type = 'n', axes = F,
        xlab = '', main = '', ylab = '')
@@ -38,13 +44,7 @@ plot.base <- function() {
   text(END.DATE, newyork.axis / max(newyork.axis), labels = c('0', paste(1:6, 'million')), pos = 4, col = COL$newyork, font = 1)
   text(END.DATE, 1.05, 'New York', col = COL$newyork, pos = 4)
 
-
-  par(
-    las = 0,
-    mar = c(2,8,2,8),
-    lwd = 5,
-    lend = 2
-  )
+  par(las = 0)
 }
 
 is.weekend <- function(date){
@@ -106,9 +106,9 @@ plot.date <- function(date) {
   })
 }
 
-a_ply(ridership[1:30,], 1, function(df) {
+a_ply(ridership[1:100,], 1, function(df) {
   date <- df[1,'date']
-  png(paste('frames',format(date),sep='/'), width = 1200, height = 900, res = 200)
+  png(paste('frames',format(date),sep='/'), width = 1600, height = 900, res = 200)
   plot.date(date)
   dev.off()
 })
