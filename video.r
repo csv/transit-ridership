@@ -105,9 +105,11 @@ plot.date <- function(date) {
   })
 }
 
+ridership$i <- sprintf('%04d', 1:nrow(ridership))
 a_ply(ridership, 1, function(df) {
   date <- df[1,'date']
-  png(paste('frames',format(date),sep='/'), width = 3000, height = 1000, res = 200)
+  i <- df[1,'i']
+  png(paste('frames/',i,'.png',sep=''), width = 3000, height = 1000, res = 200)
   plot.date(date)
   dev.off()
 })
