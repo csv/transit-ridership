@@ -10,7 +10,7 @@ COL <- list(
   newyork = rgb(0.0, 1.0, 1.0, max = 1),
   off.white = rgb(0.9, 0.9, 0.9, max = 1),
   off.black = rgb(0.1, 0.1, 0.1, max = 1),
-  green = rgb(0.5, 0.0, 0.5, max = 1)
+  grey = rgb(0.5, 0.5, 0.5, max = 1)
 )
 
 START.DATE <- as.Date(strftime(min(ridership$date), format = '%Y-%m-01'))
@@ -59,7 +59,7 @@ plot.date <- function(date) {
   day <- strftime(date, format = '%A')
   if(day == 'Friday' | day == 'Sunday'){
     par(
-      bg = COL$green
+      bg = COL$grey
     )
   } else {
     par(
