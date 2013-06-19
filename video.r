@@ -10,7 +10,7 @@ COL <- list(
   newyork = rgb(0.0, 1.0, 1.0, max = 1),
   off.white = rgb(0.9, 0.9, 0.9, max = 1),
   off.black = rgb(0.1, 0.1, 0.1, max = 1),
-  magenta = rgb(0.8, 0.0, 0.8, max = 1)
+  magenta = rgb(0.3, 0.0, 0.3, max = 1)
 )
 
 START.DATE <- as.Date(strftime(min(ridership$date), format = '%Y-%m-01'))
@@ -57,7 +57,7 @@ plot.date <- function(date) {
   ridership.sofar <- ridership[ridership$date <= date,]
 
   day <- strftime(date, format = '%A')
-  if(day == 'Friday' | day == 'Sunday'){
+  if(day == 'Saturday' | day == 'Sunday'){
     par(
       bg = COL$magenta
     )
@@ -109,6 +109,7 @@ ridership$i <- sprintf('%04d', 1:nrow(ridership))
 a_ply(ridership, 1, function(df) {
   date <- df[1,'date']
   i <- df[1,'i']
+  cat('Plotting frame',i,'\n')
   png(paste('frames/',i,'.png',sep=''), width = 3000, height = 1000, res = 200)
   plot.date(date)
   dev.off()
