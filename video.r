@@ -92,7 +92,7 @@ plot.date <- function(date) {
   })
 
   # Print the date.
-  mtext(strftime(date, format = '%A, %B %m, %Y'), side = 3)
+  mtext(strftime(date, format = '%A, %B %d, %Y'), side = 3)
 
   # Gauges on the sides
   last.week <- ridership.sofar[(ridership.sofar$date + 7) > date,]
